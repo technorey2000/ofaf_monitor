@@ -1,1 +1,1 @@
-OFAF monitor - used to monitor and control freezers on using a 485 network.
+OFAF monitor - used to monitor and control freezers using a 485 network.

@@ -9,6 +9,7 @@
 #include "esp_timer.h"
 #include <esp_log.h>
 #include "string.h"
+#include "driver/uart.h"
 
 //Common includes
 #include "Shared/common.h"
@@ -63,6 +64,50 @@ RTC_NOINIT_ATTR char otaLastVersion[SOFTWARE_VERSION_MAX_CHARACTERS];
 RTC_NOINIT_ATTR uint32_t otaCountSig;
 
 int app_main() {
+
+  // Configuration for UART0
+  const uart_config_t uart0_config = {
+      .baud_rate = 115200,
+      .data_bits = UART_DATA_8_BITS,
+      .parity = UART_PARITY_DISABLE,
+      .stop_bits = UART_STOP_BITS_1,
+      .flow_ctrl = UART_HW_FLOWCTRL_DISABLE
+  };
+
+  // Configuration for UART1
+  const uart_config_t uart1_config = {
+      .baud_rate = 9600,
+      .data_bits = UART_DATA_8_BITS,
+      .parity = UART_PARITY_DISABLE,
+      .stop_bits = UART_STOP_BITS_1,
+      .flow_ctrl = UART_HW_FLOWCTRL_DISABLE
+  };
+
+  // Install UART drivers
+  uart_driver_install(UART_NUM_0, 1024 * 2, 0, 0, NULL, 0);
+  uart_driver_install(UART_NUM_1, 1024 * 2, 0, 0, NULL, 0);
+
+  // Configure UART0 pins
+  uart_param_config(UART_NUM_0, &uart0_config);
+  uart_set_pin(UART_NUM_0, UART0_TX_PIN, UART0_RX_PIN, UART_PIN_NO_CHANGE, UART_PIN_NO_CHANGE);
+
+  // Configure UART1 pins
+  uart_param_config(UART_NUM_1, &uart1_config);
+  uart_set_pin(UART_NUM_1, UART1_TX_PIN, UART1_RX_PIN, UART_PIN_NO_CHANGE, UART_PIN_NO_CHANGE);
+
+  const char *uart0_message = "Hello from UART0!\n";
+  const char *uart1_message = "Hello from UART1!\n";
+
+  while (1) {
+      // Send data through UART0
+      uart_write_bytes(UART_NUM_0, uart0_message, strlen(uart0_message));
+
+      // Send data through UART1
+      uart_write_bytes(UART_NUM_1, uart1_message, strlen(uart1_message));
+
+      vTaskDelay(1000 / portTICK_PERIOD_MS); // Delay for readability
+  }
+
 
   //Create sync timer
   const esp_timer_create_args_t sync_timer_args = {

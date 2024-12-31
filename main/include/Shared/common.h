@@ -32,7 +32,6 @@ uint32_t sys_getMsgTimeStamp(void);
 
 //#define SLEEP_TIMER_OFF                 //Disable the sleep timer
 //#define TEST_MODE                       //Disable normal startup and go into a test mode
-//#define BLE_DATA_GATEWAY                //Enable BLE gateway test
 
 #define WAKE_TIME_IN_MIN 5  //5 is default
 #define BLE_INACTIVITY_TIME_MS (5 * ONE_MINUTE_IN_SEC * ONE_SECOND_IN_MS) 
@@ -41,20 +40,10 @@ uint32_t sys_getMsgTimeStamp(void);
 //#define BROWNOUT_DETECT_OFF             //Disable brownout detection
 //#define BROWNOUT_OVERRIDE true          //Used to override the brownout test
 
-//#define TIME_DURATION_OVERRIDE          //Used to override time duration between data uploads
-//#define OVERRIDE_UPLOAD_DURATION_MIN  360 //30  //upload when time exceed x min, default is 360 min (every 6 hours)
-
 //#define SLEEP_DURATION_OVERRIDE         //Used to override the time the scale stays asleep
 //#define SLEEP_OVERRIDE_MIN  60 //5           //sleep time in minutes, default is 60 min
 
-//#define OVERRIDE_CONFIGURATION          //If defined, will override the scale configuration with a test string
-//#define OVERRIDE_OTA_URL               //If defined, will override the url used to get the latest binary file with a test string
-
 #define SQ_GET_DATE_TIME_REPEAT_COUNT 10   //Set to 0 to test rtc failure alarm
-
-#define NEW_SCALE                   //If this is defined, the code is for the new scale with changed IO pin for the hidden button.
-
-#define ENABLE_OTA                    //If defined, will do an OTA test
 
 #define BLE_SECURITY          //When defined the BLE security will be enabled by default
 
@@ -605,6 +594,11 @@ enum dispatcher_ping_resp {
 
 #define EMI_TEST_START  true
 #define EMI_TEST_STOP   false
+
+#define UART0_TX_PIN 1
+#define UART0_RX_PIN 3
+#define UART1_TX_PIN 4
+#define UART1_RX_PIN 5
 
 
 enum serial_cmd_type {
